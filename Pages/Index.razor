@@ -1,0 +1,33 @@
+﻿@page "/"
+
+<h1>Hello, world!</h1>
+
+Welcome to your new app.
+
+<SurveyPrompt Title="How is Blazor working for you?" />
+
+@foreach (var item in new[] { Architecture.Windows, Architecture.MacOSX, Architecture.Linux })
+{
+
+    <label class="col-auto">
+        <input name="arch" type="radio"
+               value="@item"
+               checked="@IsActive(item))"
+               @onchange="@( _ => ChangeArchitecture(item))" />
+        @item.ToString()
+    </label><!-- checked attribute has an extra `)` parenthesis that "break" the UI render of the checked option. No error, everything works fine, only checked UI is out of sync -->
+}
+<h1>@current</h1>
+@code {
+
+    enum Architecture
+    {
+        None,
+        Windows,
+        MacOSX,
+        Linux
+    }
+    Architecture current = Architecture.None;
+    bool IsActive(Architecture arch) => current == arch;
+    void ChangeArchitecture(Architecture arch) => current = arch;
+}
